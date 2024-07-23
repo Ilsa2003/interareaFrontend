@@ -7,13 +7,11 @@ function UpdateAvatar({ onClose, onUpdate }) {
 
   const handleFileChange = (e) => {
     setSelectedFile(e.target.files[0]);
-    setMessage(null);  // Reset message when a new file is selected
-    setTimeout(onClose, 2000);
+    setMessage(null);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!selectedFile) {
       setMessage('Please select a file.');
       return;
@@ -24,9 +22,10 @@ function UpdateAvatar({ onClose, onUpdate }) {
 
     try {
       const response = await axios.post('https://internareaback.onrender.com/api/avatar/upload', formData);
-      onUpdate(`https://internareaback.onrender.com/${response.data.file}`);
+      const avatarUrl = `https://internareaback.onrender.com/${response.data.file}`;
+      onUpdate(avatarUrl);
       setMessage('File uploaded successfully!');
-      setSelectedFile(null); // Clear the file input after upload
+      setSelectedFile(null);
     } catch (error) {
       console.error('Error uploading avatar:', error);
       setMessage('Error uploading avatar. Please try again.');
